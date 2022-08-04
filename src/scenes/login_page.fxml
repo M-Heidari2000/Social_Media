@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="accounts.controllers.LoginPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginPageController">
    <children>
       <ImageView fitHeight="768.0" fitWidth="1024.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="125.0" layoutY="287.0" text="Username or Email: ">
+      <Label layoutX="123.0" layoutY="294.0" text="Username: ">
          <font>
-            <Font name="Verdana" size="16.0" />
+            <Font size="16.0" />
          </font>
       </Label>
       <TextField fx:id="usernameText" layoutX="123.0" layoutY="328.0" prefHeight="40.0" prefWidth="759.0" promptText="enter your username">
@@ -27,7 +27,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="passwordText" layoutX="123.0" layoutY="429.0" prefHeight="40.0" prefWidth="759.0" promptText="enteryour password">
+      <PasswordField fx:id="passwordText" layoutX="123.0" layoutY="429.0" prefHeight="40.0" prefWidth="759.0" promptText="enter your password">
          <font>
             <Font size="16.0" />
          </font>
@@ -48,5 +48,10 @@
             <Font size="16.0" />
          </font>
       </Hyperlink>
+      <Label fx:id="invalidDataLabel" alignment="CENTER" layoutX="295.0" layoutY="217.0" prefHeight="26.0" prefWidth="416.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

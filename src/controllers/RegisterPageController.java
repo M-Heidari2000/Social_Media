@@ -1,4 +1,4 @@
-package accounts.controllers;
+package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import database.AccountsDatabaseManager;
-import accounts.form_exception.*;;
+import form_exception.*;;
 
 public class RegisterPageController {
     
@@ -55,7 +55,7 @@ public class RegisterPageController {
             e.printStackTrace();
         }
         catch (PasswordNotMatch e){
-            passwordNotMatchLabel.setText("Passwords didn't match");
+            passwordNotMatchLabel.setText(e.getMessage());
         }
     }
 
