@@ -24,10 +24,7 @@ public class LoginPageController {
     private Parent root;
 
     public void login(ActionEvent event){
-        String username = usernameText.getText();
-        String password = passwordText.getText();
-        System.out.println(username);
-        System.out.println(password);
+        
     }
 
     public void gotoRegisterPage(ActionEvent event) throws IOException{
