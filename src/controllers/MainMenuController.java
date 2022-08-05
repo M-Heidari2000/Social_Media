@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -15,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import controllers.*;
 
 public class MainMenuController implements Initializable{
     
@@ -133,9 +133,11 @@ public class MainMenuController implements Initializable{
         stage.show();
     }
 
-    public void gotoMyPostsPage(ActionEvent event) throws IOException{
+    public void gotoMyPostsPage(ActionEvent event) throws IOException, SQLException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//my_posts_page.fxml"));
         root = loader.load();
+        MyPostsController myPostsController = loader.getController();
+        myPostsController.initialize(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
