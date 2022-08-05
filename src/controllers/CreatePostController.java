@@ -1,13 +1,15 @@
 package controllers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import database.PostsDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -36,7 +38,9 @@ public class CreatePostController extends MainMenuController{
 
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
     
-    Stage stage;
+    private Stage stage;
+    private Parent root;
+    private Scene scene;
 
     public void initialize() {
         try {
@@ -64,9 +68,11 @@ public class CreatePostController extends MainMenuController{
         int authorID = CurrentUser.getCurrentUser().getUserID();
         try{
             this.dbManager.insertPost(authorID, title, body, this.postImageFile);
+            this.gotoMyPostsPage(event);
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
+
 }
