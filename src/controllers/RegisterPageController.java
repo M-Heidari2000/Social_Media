@@ -35,6 +35,8 @@ public class RegisterPageController {
     private Scene scene;
     private Parent root;
 
+    private AccountsDatabaseManager dbManager = new AccountsDatabaseManager();
+
     public void register(ActionEvent event) throws IOException{
         String firstName = firstNameText.getText();
         String lastName = lastNameText.getText();
@@ -43,7 +45,6 @@ public class RegisterPageController {
         String confirmPassword = confirmPasswordText.getText();
         String email = emailText.getText();
         String accountType = rButtonNormal.isSelected() ? "normal" : "business";
-        AccountsDatabaseManager dbManager = new AccountsDatabaseManager();
         try {
             if (!password.equals(confirmPassword)){
                 throw new PasswordNotMatch("Passwords doesn't match");

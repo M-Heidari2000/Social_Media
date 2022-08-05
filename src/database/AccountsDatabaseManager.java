@@ -1,6 +1,9 @@
 package database;
 
 import java.sql.Timestamp;
+import controllers.CurrentUser;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,26 +14,64 @@ import form_exception.InvalidDataException;
 public class AccountsDatabaseManager {
     
     private Database database;
+    private CurrentUser currentUser = CurrentUser.getCurrentUser();
 
     public AccountsDatabaseManager(){
         this.database = new Database();
     }
 
+    public void populateCurrentUser(int user_id) throws SQLException{
+        String GET_IMG_SQL = "SELECT username, email, first_name, last_name, email, profile_img," + 
+                             "LENGTH(profile_img) AS img_len, bio, account_type FROM accounts WHERE user_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement preparedStatement = conn.prepareStatement(GET_IMG_SQL);
+        preparedStatement.setInt(1, user_id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()){
+
+            this.currentUser.setUserID(user_id);
+            this.currentUser.setUsername(resultSet.getString("username"));
+            this.currentUser.setEmail(resultSet.getString("email"));
+            this.currentUser.setFirstName(resultSet.getString("first_name"));
+            this.currentUser.setLastName(resultSet.getString("last_name"));
+            this.currentUser.setEmail(resultSet.getString("bio"));
+            this.currentUser.setAccountType(resultSet.getString("account_type"));
+
+            File imgFile = new File("..//static//temp//profile_image_temp.jpg");
+            try (FileOutputStream fos = new FileOutputStream(imgFile)){
+                int imgLen = resultSet.getInt("img_len");
+                byte[] buf = resultSet.getBytes("profile_img");
+                fos.write(buf, 0, imgLen);
+                this.currentUser.setImgAddress("..//static//temp//profile_image_temp.jpg");
+            }
+            catch (Exception e) {
+                this.currentUser.setImgAddress("..//static//profile_default.png");
+            }
+        }
+
+    }
+
     public void authenticate(String username, String password) throws SQLException, InvalidDataException{
-        String AUTHENTICATE_SQL = "SELECT COUNT(*) AS exists FROM accounts WHERE username = ? AND password = ?";
+        int user_id = -1;
+        String AUTHENTICATE_SQL = "SELECT user_id FROM accounts WHERE username = ? AND password = ?";
         Connection conn = this.database.connect();
         PreparedStatement preparedStatement = conn.prepareStatement(AUTHENTICATE_SQL);
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        resultSet.next();
-        boolean exists = resultSet.getInt("exists") != 0;
+        boolean exists = false;
+        while(resultSet.next()){
+            exists = true;
+            user_id = resultSet.getInt("user_id");
+        }
         if (!exists){
             throw new InvalidDataException("Invalid username or password");
         }
-
+        populateCurrentUser(user_id);
         conn.close();
+        resultSet.close();
     }
 
     public void insert(String username, String email, String password, String firstName, String lastName, String accountType) throws IOException, SQLException{

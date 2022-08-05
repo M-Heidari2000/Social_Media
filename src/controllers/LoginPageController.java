@@ -29,12 +29,15 @@ public class LoginPageController {
     private Scene scene;
     private Parent root;
 
+    private AccountsDatabaseManager dbManager = new AccountsDatabaseManager();
+
+    
+
     public void login(ActionEvent event) throws IOException{
         String username = usernameText.getText();
         String password = passwordText.getText();
 
         try{
-            AccountsDatabaseManager dbManager = new AccountsDatabaseManager();
             dbManager.authenticate(username, password);
             this.gotoExplorerPage(event);
         }
