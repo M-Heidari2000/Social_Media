@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import controllers.ExplorerController;
 import controllers.MyPostsController;
 import javafx.fxml.FXMLLoader;
 
@@ -20,7 +22,42 @@ public class PostsDatabaseManager {
         this.database = new Database();
     }
 
-    public void getAllPosts(int authorID, FXMLLoader loader) throws SQLException, IOException{
+    public void getAllPosts(FXMLLoader loader) throws SQLException, IOException{
+
+        String SELECT_POSTS_SQL = "SELECT post_id, title, body, image, LENGTH(image) AS img_len, last_edited FROM posts";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(SELECT_POSTS_SQL);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            FileOutputStream fos = null;
+            try {
+                int postID = rs.getInt("post_id");
+                String imageAddressAbs = "D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\post_image_temp_" +
+                                          Integer.toString(postID) + ".png";
+                String imageAddressRlt = "..//static//temp//post_image_temp_" + Integer.toString(postID) + ".png";
+                File imgFile = new File(imageAddressAbs);
+                fos = new FileOutputStream(imgFile);
+                ExplorerController explorerController = loader.getController();
+        
+                String title = rs.getString("title");
+                String body = rs.getString("body");
+                Timestamp lastEdited = rs.getTimestamp("last_edited");
+    
+                int imgLen = rs.getInt("img_len");
+                byte[] buf = rs.getBytes("image");
+                fos.write(buf, 0, imgLen);
+    
+                explorerController.addPost(title, body, imageAddressRlt, lastEdited);
+                fos.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void getAllUserPosts(int authorID, FXMLLoader loader) throws SQLException, IOException{
 
         String SELECT_POSTS_SQL = "SELECT post_id, title, body, image, LENGTH(image) AS img_len, last_edited FROM posts WHERE author = ?";
         Connection conn = this.database.connect();

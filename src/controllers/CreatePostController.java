@@ -1,22 +1,18 @@
 package controllers;
 
 import java.io.File;
-import java.io.IOException;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import database.PostsDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class CreatePostController extends MainMenuController{
 
@@ -38,9 +34,6 @@ public class CreatePostController extends MainMenuController{
 
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
     
-    private Stage stage;
-    private Parent root;
-    private Scene scene;
 
     public void initialize() {
         try {
@@ -66,6 +59,10 @@ public class CreatePostController extends MainMenuController{
         String title = postTitleText.getText();
         String body = postBodyText.getText();
         int authorID = CurrentUser.getCurrentUser().getUserID();
+        if (postImageFile == null){
+            postImageFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\profile_img_default.png");
+            postImage = new Image(getClass().getResourceAsStream("..//static//profile_img_default.png"));
+        }
         try{
             this.dbManager.insertPost(authorID, title, body, this.postImageFile);
             this.gotoMyPostsPage(event);
