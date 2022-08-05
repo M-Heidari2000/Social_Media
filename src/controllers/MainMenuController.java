@@ -20,12 +20,14 @@ import controllers.*;
 public class MainMenuController implements Initializable{
     
     @FXML
-    ImageView profileImageView, explorerImageView, directImageView, groupsImageView, settingsImageView, createPostImageView, logoutImageView;
+    ImageView profileImageView, explorerImageView, directImageView, groupsImageView, settingsImageView,
+              createPostImageView, logoutImageView, myPostsImageView;
 
     @FXML
     Label usernameLabel;
 
-    Image profileImg, explorerLogo, directLogo, groupsLogo, settingsLogo, createPostLogo, logoutLogo;
+    Image profileImg, explorerLogo, directLogo, groupsLogo, settingsLogo, createPostLogo, logoutLogo,
+          myPostsLogo;
 
     CurrentUser currentUser = CurrentUser.getCurrentUser();
 
@@ -59,6 +61,9 @@ public class MainMenuController implements Initializable{
 
             logoutLogo = new Image(getClass().getResourceAsStream("..//static//explorer_menu//logo_logout.png"));
             logoutImageView.setImage(logoutLogo);
+
+            myPostsLogo = new Image(getClass().getResourceAsStream("..//static//explorer_menu//logo_my_posts.png"));
+            myPostsImageView.setImage(myPostsLogo);
 
 
         } 
@@ -121,6 +126,15 @@ public class MainMenuController implements Initializable{
     public void logout(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//login_page.fxml"));
         currentUser.setAuthenticated(false);
+        root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void gotoMyPostsPage(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//my_posts_page.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
