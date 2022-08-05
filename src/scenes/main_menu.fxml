@@ -2,14 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ExplorerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainMenuController">
    <children>
       <VBox prefHeight="768.0" prefWidth="238.0" style="-fx-background-radius: 10; -fx-border-width: 3; -fx-border-color: #000000; -fx-border-radius: 10;">
          <children>
@@ -26,16 +25,16 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="237.0">
                <children>
-                  <HBox style="-fx-border-width: 0.5; -fx-border-color: #000000;">
+                  <HBox style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
                      <children>
                         <ImageView fx:id="explorerImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="182.0" text="Explorer" textFill="#ff3c84">
+                        <Button mnemonicParsing="false" onAction="#gotoExplorerPage" prefHeight="60.0" prefWidth="182.0" text="Explorer">
                            <font>
                               <Font name="Lucida Console" size="14.0" />
                            </font>
                         </Button>
                      </children></HBox>
-                  <HBox layoutX="10.0" layoutY="10.0" style="-fx-border-width: 0.5; -fx-border-color: #000000;">
+                  <HBox layoutX="10.0" layoutY="10.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
                      <children>
                         <ImageView fx:id="directImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
                         <Button mnemonicParsing="false" onAction="#gotoDirectMessagePage" prefHeight="60.0" prefWidth="182.0" text="Direct Messages">
@@ -90,10 +89,5 @@
             <VBox alignment="BOTTOM_CENTER" prefHeight="223.0" prefWidth="237.0" />
          </children>
       </VBox>
-      <ScrollPane layoutX="236.0" prefHeight="768.0" prefWidth="790.0" style="-fx-border-width: 3; -fx-border-color: #000000; -fx-border-radius: 10; -fx-background-radius: 10;">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2000.0" prefWidth="754.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" />
-        </content>
-      </ScrollPane>
    </children>
 </AnchorPane>

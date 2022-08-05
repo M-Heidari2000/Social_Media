@@ -1,5 +1,7 @@
 package controllers;
 
+import java.sql.Timestamp;
+
 public class CurrentUser {
     
     private int userID;
@@ -10,6 +12,9 @@ public class CurrentUser {
     private String imgAdress;
     private String bio;
     private String accountType;
+    private Timestamp createdOn;
+    private Timestamp lastLogin;
+    private boolean authenticated = false;
 
     private static final CurrentUser user = new CurrentUser();
 
@@ -17,6 +22,14 @@ public class CurrentUser {
 
     public static CurrentUser getCurrentUser(){
         return user;
+    }
+
+    public void setAuthenticated(boolean authenticated){
+        this.authenticated = authenticated;
+    }
+
+    public boolean getAuthenticated(){
+        return this.authenticated;
     }
 
     public void setUsername(String username){
@@ -81,5 +94,21 @@ public class CurrentUser {
 
     public int getUserID(){
         return this.userID;
+    }
+
+    public void setCreatedOn(Timestamp createdOn){
+        this.createdOn = createdOn;
+    }
+
+    public Timestamp getCreatedOn(){
+        return this.createdOn;
+    }
+
+    public void setLastLogin(Timestamp lastLogin){
+        this.lastLogin = lastLogin;
+    }
+
+    public Timestamp getLastLogin(){
+        return this.lastLogin;
     }
 }
