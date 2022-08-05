@@ -72,9 +72,11 @@ public class MainMenuController implements Initializable{
         }
     }
 
-    public void gotoExplorerPage(ActionEvent event) throws IOException{
+    public void gotoExplorerPage(ActionEvent event) throws IOException, SQLException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//explorer_page.fxml"));
         root = loader.load();
+        ExplorerController explorerController = loader.getController();
+        explorerController.initialize(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -112,7 +114,6 @@ public class MainMenuController implements Initializable{
 
     
     public void gotoCreatePostPage(ActionEvent event) throws IOException{
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//create_post_page.fxml"));
         root = loader.load();
         CreatePostController createPostController = loader.getController();

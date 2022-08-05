@@ -61,7 +61,7 @@ public class LoginPageController {
     }
 
     public void gotoExplorerPage(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//explorer_page.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//main_menu_page.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

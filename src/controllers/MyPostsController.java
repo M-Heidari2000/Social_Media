@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import database.PostsDatabaseManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -22,7 +23,7 @@ public class MyPostsController extends MainMenuController{
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
 
     public void initialize(FXMLLoader loader) throws SQLException, IOException{
-        dbManager.getAllPosts(CurrentUser.getCurrentUser().getUserID(), loader);
+        dbManager.getAllUserPosts(CurrentUser.getCurrentUser().getUserID(), loader);
     }
 
     public String shortenBody(String body){
@@ -45,10 +46,16 @@ public class MyPostsController extends MainMenuController{
         VBox newVboxTitle = new VBox();
         Hyperlink newHyperLink = new Hyperlink(title);
         newHyperLink.setStyle("-fx-font: 18 arial;");
+        newHyperLink.setPadding(new Insets(0, 10, 0, 0));
         Label newBodyLabel = new Label(this.shortenBody(body));
-        newBodyLabel.setStyle("-fx-font: 14 arial");
+        newBodyLabel.setStyle("-fx-font: 13 arial");
+        newBodyLabel.setPadding(new Insets(10, 10, 10, 0));
+        Label newDateLabel = new Label("last edited on " + lastEdited.toString() + " by " + CurrentUser.getCurrentUser().getUsername());
+        newDateLabel.setStyle("-fx-font: 11 arial");
+        newDateLabel.setPadding(new Insets(10, 10, 0, 0));
         newVboxTitle.getChildren().add(newHyperLink);
         newVboxTitle.getChildren().add(newBodyLabel);
+        newVboxTitle.getChildren().add(newDateLabel);
 
         Label newVLabel1 = new Label();
         newVLabel1.setPrefHeight(5);
