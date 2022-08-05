@@ -28,6 +28,8 @@ public class AccountsDatabaseManager {
         preparedStatement.setInt(1, user_id);
         ResultSet resultSet = preparedStatement.executeQuery();
 
+        Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
+
         while(resultSet.next()){
 
             this.currentUser.setUserID(user_id);
@@ -37,6 +39,9 @@ public class AccountsDatabaseManager {
             this.currentUser.setLastName(resultSet.getString("last_name"));
             this.currentUser.setEmail(resultSet.getString("bio"));
             this.currentUser.setAccountType(resultSet.getString("account_type"));
+            this.currentUser.setLastLogin(currentTimeStamp);
+            this.currentUser.setAuthenticated(true);
+            
 
             File imgFile = new File("..//static//temp//profile_image_temp.jpg");
             try (FileOutputStream fos = new FileOutputStream(imgFile)){
@@ -72,6 +77,16 @@ public class AccountsDatabaseManager {
         populateCurrentUser(user_id);
         conn.close();
         resultSet.close();
+    }
+
+    public void update() throws SQLException{
+        String UPDATE_ACCOUNTS_SQL = "UPDATE accounts SET last_login = ? WHERE user_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(UPDATE_ACCOUNTS_SQL);
+        ps.setTimestamp(1, this.currentUser.getLastLogin());
+        ps.setInt(2, this.currentUser.getUserID());
+        ps.executeUpdate();
+        conn.close();
     }
 
     public void insert(String username, String email, String password, String firstName, String lastName, String accountType) throws IOException, SQLException{
