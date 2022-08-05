@@ -46,7 +46,7 @@ public class AccountsDatabaseManager {
                 this.currentUser.setImgAddress("..//static//temp//profile_image_temp.jpg");
             }
             catch (Exception e) {
-                this.currentUser.setImgAddress("..//static//profile_default.png");
+                this.currentUser.setImgAddress("..//static//profile_img_default.png");
             }
         }
 
