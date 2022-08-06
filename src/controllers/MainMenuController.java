@@ -12,7 +12,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -38,8 +41,6 @@ public class MainMenuController implements Initializable{
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
-
-
             profileImg = new Image(getClass().getResourceAsStream(currentUser.getImgAddress()));
             profileImageView.setImage(profileImg);
             usernameLabel.setText("Welcome " + currentUser.getFirstName() + "!");
@@ -64,19 +65,21 @@ public class MainMenuController implements Initializable{
 
             myPostsLogo = new Image(getClass().getResourceAsStream("..//static//explorer_menu//logo_my_posts.png"));
             myPostsImageView.setImage(myPostsLogo);
-
-
         } 
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void initializeElements(FXMLLoader loader) throws Exception{
+        
+    }
+
     public void gotoExplorerPage(ActionEvent event) throws IOException, SQLException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//explorer_page.fxml"));
         root = loader.load();
         ExplorerController explorerController = loader.getController();
-        explorerController.initialize(loader);
+        explorerController.initializeElements(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -84,8 +87,10 @@ public class MainMenuController implements Initializable{
     }
 
     public void gotoSettingsPage(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//explorer_page.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//settings_page.fxml"));
         root = loader.load();
+        SettingsController settingsController = loader.getController();
+        settingsController.initializeElements(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -117,7 +122,7 @@ public class MainMenuController implements Initializable{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//create_post_page.fxml"));
         root = loader.load();
         CreatePostController createPostController = loader.getController();
-        createPostController.initialize();
+        createPostController.initializeElements(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -125,20 +130,28 @@ public class MainMenuController implements Initializable{
     }
 
     public void logout(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//login_page.fxml"));
-        currentUser.setAuthenticated(false);
-        root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Are you sure you want to logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK){        
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//login_page.fxml"));
+            currentUser.setAuthenticated(false);
+            root = loader.load();
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void gotoMyPostsPage(ActionEvent event) throws IOException, SQLException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//my_posts_page.fxml"));
         root = loader.load();
         MyPostsController myPostsController = loader.getController();
-        myPostsController.initialize(loader);
+        myPostsController.initializeElements(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

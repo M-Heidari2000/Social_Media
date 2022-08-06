@@ -2,11 +2,10 @@ package controllers;
 
 import java.io.File;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
 import database.PostsDatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -34,8 +33,8 @@ public class CreatePostController extends MainMenuController{
 
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
     
-
-    public void initialize() {
+    @Override
+    public void initializeElements(FXMLLoader loader) {
         try {
             postImage = new Image(getClass().getResourceAsStream("..//static//create_post_menu//default_post_img.png"));
             postImageView.setImage(postImage);
