@@ -31,14 +31,12 @@ public class LoginPageController {
 
     private AccountsDatabaseManager dbManager = new AccountsDatabaseManager();
 
-    
-
     public void login(ActionEvent event) throws IOException{
         String username = usernameText.getText();
         String password = passwordText.getText();
-
         try{
             dbManager.authenticate(username, password);
+            dbManager.updateLastLogin();
             this.gotoExplorerPage(event);
         }
         catch(SQLException e){

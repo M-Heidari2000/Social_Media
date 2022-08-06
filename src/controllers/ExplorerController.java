@@ -21,7 +21,8 @@ public class ExplorerController extends MainMenuController{
 
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
 
-    public void initialize(FXMLLoader loader) throws SQLException, IOException{
+    @Override
+    public void initializeElements(FXMLLoader loader) throws SQLException, IOException{
         dbManager.getAllPosts(loader);
     }
 
