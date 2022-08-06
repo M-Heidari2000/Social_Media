@@ -72,13 +72,11 @@ public class ExplorerController extends MainMenuController{
         newVboxTitle.getChildren().add(newHyperLink);
         newVboxTitle.getChildren().add(newBodyLabel);
         newVboxTitle.getChildren().add(newDateLabel);
-
+        HBox.setMargin(newVboxTitle, new Insets(0, 0, 0, 10));
 
         postsVBox.getChildren().add(newVBox);
         newVBox.getChildren().add(newHBox);
-
         newHBox.getChildren().add(newImageView);
-
         newHBox.getChildren().add(newVboxTitle);
 
         newHyperLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -105,6 +103,7 @@ public class ExplorerController extends MainMenuController{
                     }
 
                     dbManager.getPostDetails(loader, postID);
+                    dbManager.getPostComments(loader, postID);
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();

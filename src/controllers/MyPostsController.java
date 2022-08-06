@@ -72,6 +72,7 @@ public class MyPostsController extends MainMenuController{
         newVboxTitle.getChildren().add(newHyperLink);
         newVboxTitle.getChildren().add(newBodyLabel);
         newVboxTitle.getChildren().add(newDateLabel);
+        HBox.setMargin(newVboxTitle, new Insets(0, 0, 0, 10));
 
         postsVBox.getChildren().add(newVBox);
         newVBox.getChildren().add(newHBox);

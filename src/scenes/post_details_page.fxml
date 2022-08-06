@@ -106,7 +106,7 @@
          <children>
             <ScrollPane prefHeight="767.0" prefWidth="788.0" AnchorPane.rightAnchor="0.0">
                <content>
-                  <VBox alignment="TOP_CENTER" prefHeight="1481.0" prefWidth="671.0" style="-fx-background-radius: 10; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 3;">
+                  <VBox fx:id="postVBox" alignment="TOP_CENTER" prefHeight="2000.0" prefWidth="671.0" style="-fx-background-radius: 10; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 3;">
                      <children>
                         <Hyperlink fx:id="postTitleHyperlink" alignment="CENTER" prefHeight="34.0" prefWidth="783.0">
                            <VBox.margin>
@@ -118,19 +118,45 @@
                         </Hyperlink>
                         <ImageView fx:id="postImageView" fitHeight="265.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                        </ImageView>
-                        <Label fx:id="postBodyText" alignment="TOP_LEFT" prefHeight="172.0" prefWidth="765.0">
-                           <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
+                        </ImageView>
+                        <VBox alignment="TOP_CENTER" prefHeight="257.0" prefWidth="665.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
+                           <VBox.margin>
+                              <Insets bottom="100.0" left="20.0" right="20.0" top="40.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label fx:id="postBodyLabel" alignment="TOP_LEFT" prefHeight="237.0" prefWidth="623.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Times New Roman" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="postDateLabel" alignment="BOTTOM_RIGHT" prefHeight="62.0" prefWidth="630.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <Label prefHeight="30.0" prefWidth="679.0" text="Comments">
                            <font>
-                              <Font name="Times New Roman" size="14.0" />
+                              <Font name="Lucida Console" size="18.0" />
                            </font>
-                           <padding>
-                              <Insets left="20.0" right="20.0" />
-                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Label>
                      </children>
                   </VBox>

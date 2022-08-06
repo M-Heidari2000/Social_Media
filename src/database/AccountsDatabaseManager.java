@@ -42,13 +42,13 @@ public class AccountsDatabaseManager {
             this.currentUser.setLastLogin(currentTimeStamp);
             this.currentUser.setAuthenticated(true);
             
-            File imgFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\profile_image_temp.jpg");
+            File imgFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\profile_image_temp.png");
             try {
                 FileOutputStream fos = new FileOutputStream(imgFile);
                 int imgLen = resultSet.getInt("img_len");
                 byte[] buf = resultSet.getBytes("profile_img");
                 fos.write(buf, 0, imgLen);
-                this.currentUser.setImgAddress("..//static//temp//profile_image_temp.jpg");
+                this.currentUser.setImgAddress("..//static//temp//profile_image_temp.png");
                 fos.close();
             }
             catch (Exception e) {
