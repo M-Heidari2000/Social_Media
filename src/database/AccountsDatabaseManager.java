@@ -1,9 +1,6 @@
 package database;
 
 import java.sql.Timestamp;
-
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
 import controllers.CurrentUser;
 import java.io.File;
 import java.io.FileInputStream;

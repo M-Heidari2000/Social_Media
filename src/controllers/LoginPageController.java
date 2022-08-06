@@ -8,9 +8,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import database.AccountsDatabaseManager;
 import form_exception.*;
@@ -34,6 +36,9 @@ public class LoginPageController {
     public void login(ActionEvent event) throws IOException{
         String username = usernameText.getText();
         String password = passwordText.getText();
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error logging in");
+        alert.setHeaderText("username and password doesn't match");
         try{
             dbManager.authenticate(username, password);
             dbManager.updateLastLogin();
@@ -43,8 +48,7 @@ public class LoginPageController {
             e.printStackTrace();
         }
         catch(InvalidDataException e){
-            e.printStackTrace();
-            invalidDataLabel.setText(e.getMessage());
+            alert.showAndWait();            
             passwordText.clear();
         }
     }
