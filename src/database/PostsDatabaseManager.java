@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 
 import controllers.ExplorerController;
 import controllers.MyPostsController;
+import controllers.PostDetailsController;
 import javafx.fxml.FXMLLoader;
 
 public class PostsDatabaseManager {
@@ -24,7 +25,8 @@ public class PostsDatabaseManager {
 
     public void getAllPosts(FXMLLoader loader) throws SQLException, IOException{
 
-        String SELECT_POSTS_SQL = "SELECT post_id, title, body, image, LENGTH(image) AS img_len, last_edited FROM posts";
+        String SELECT_POSTS_SQL = "SELECT post_id, username, title, body, image, LENGTH(image) AS img_len, last_edited FROM posts "
+                                  + "INNER JOIN accounts ON posts.author = accounts.user_id";
         Connection conn = this.database.connect();
         PreparedStatement ps = conn.prepareStatement(SELECT_POSTS_SQL);
         ResultSet rs = ps.executeQuery();
@@ -42,13 +44,14 @@ public class PostsDatabaseManager {
         
                 String title = rs.getString("title");
                 String body = rs.getString("body");
+                String authorName = rs.getString("username");
                 Timestamp lastEdited = rs.getTimestamp("last_edited");
     
                 int imgLen = rs.getInt("img_len");
                 byte[] buf = rs.getBytes("image");
                 fos.write(buf, 0, imgLen);
     
-                explorerController.addPost(title, body, imageAddressRlt, lastEdited);
+                explorerController.addPost(postID, title, authorName, body, imageAddressRlt, lastEdited);
                 fos.close();
             }
             catch (Exception e) {
@@ -75,7 +78,7 @@ public class PostsDatabaseManager {
                 File imgFile = new File(imageAddressAbs);
                 fos = new FileOutputStream(imgFile);
                 MyPostsController myPostsController = loader.getController();
-        
+                
                 String title = rs.getString("title");
                 String body = rs.getString("body");
                 Timestamp lastEdited = rs.getTimestamp("last_edited");
@@ -84,7 +87,7 @@ public class PostsDatabaseManager {
                 byte[] buf = rs.getBytes("image");
                 fos.write(buf, 0, imgLen);
     
-                myPostsController.addPost(title, body, imageAddressRlt, lastEdited);
+                myPostsController.addPost(postID, title, body, imageAddressRlt, lastEdited);
                 fos.close();
             }
             catch (Exception e) {
@@ -109,6 +112,40 @@ public class PostsDatabaseManager {
         ps.executeUpdate();
         fis.close();
         conn.close();
+    }
+
+    public void getPostDetails(FXMLLoader loader, int postID) throws SQLException{
+        String GET_POST_DETAILS_SQL = "SELECT username, title, body, image, LENGTH(image) AS img_len, last_edited FROM posts "
+                                      + "INNER JOIN accounts ON posts.author = accounts.user_id WHERE post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(GET_POST_DETAILS_SQL);
+        ps.setInt(1, postID);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            FileOutputStream fos = null;
+            try {
+                String imageAddressAbs = "D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\post_image_temp.jpg";
+                String imageAddressRlt = "..//static//temp//post_image_temp_" + Integer.toString(postID) + ".png";
+                File imgFile = new File(imageAddressAbs);
+                fos = new FileOutputStream(imgFile);
+                PostDetailsController postDetailsController = loader.getController();
+                
+                String title = rs.getString("title");
+                String body = rs.getString("body");
+                String authorName = rs.getString("username");
+                Timestamp lastEdited = rs.getTimestamp("last_edited");
+                int imgLen = rs.getInt("img_len");
+                byte[] buf = rs.getBytes("image");
+                fos.write(buf, 0, imgLen);
+                
+                postDetailsController.showPost(authorName, title, body, lastEdited, imageAddressRlt);
+                fos.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

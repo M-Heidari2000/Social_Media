@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PostDetailsController">
+   <children>
+      <VBox prefHeight="768.0" prefWidth="238.0" style="-fx-background-radius: 10; -fx-border-width: 3; -fx-border-color: #000000; -fx-border-radius: 10;">
+         <children>
+            <Label prefHeight="0.0" prefWidth="233.0" />
+            <VBox alignment="TOP_CENTER" prefHeight="211.0" prefWidth="238.0">
+               <children>
+                  <Label prefHeight="0.0" prefWidth="233.0" />
+                  <ImageView fx:id="profileImageView" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="usernameLabel" alignment="CENTER" prefHeight="45.0" prefWidth="233.0">
+                     <font>
+                        <Font name="Lucida Console" size="14.0" />
+                     </font></Label>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="237.0">
+               <children>
+                  <HBox style="-fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="explorerImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoExplorerPage" prefHeight="60.0" prefWidth="182.0" text="Explorer">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children></HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" style="-fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="directImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoDirectMessagePage" prefHeight="60.0" prefWidth="182.0" text="Direct Messages">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="72.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="groupsImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoGroupsPage" prefHeight="60.0" prefWidth="182.0" text="Groups">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="133.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="myPostsImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoMyPostsPage" prefHeight="60.0" prefWidth="182.0" text="My Posts">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="133.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="createPostImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoCreatePostPage" prefHeight="60.0" prefWidth="182.0" text="Create a New Post">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="195.0" prefWidth="236.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="settingsImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#gotoSettingsPage" prefHeight="60.0" prefWidth="182.0" text="Settings">
+                           <font>
+                              <Font name="Lucida Console" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="256.0" prefWidth="236.0" style="-fx-background-color: #ffffff; -fx-border-width: 0.5; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fx:id="logoutImageView" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="182.0" text="Logout">
+                           <font>
+                              <Font name="Lucida Console" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="102.0" prefWidth="233.0" />
+         </children>
+      </VBox>
+      <AnchorPane layoutX="236.0" prefHeight="768.0" prefWidth="790.0" style="-fx-background-radius: 10;">
+         <children>
+            <ScrollPane prefHeight="767.0" prefWidth="788.0" AnchorPane.rightAnchor="0.0">
+               <content>
+                  <VBox alignment="TOP_CENTER" prefHeight="1481.0" prefWidth="671.0" style="-fx-background-radius: 10; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 3;">
+                     <children>
+                        <Hyperlink fx:id="postTitleHyperlink" alignment="CENTER" prefHeight="34.0" prefWidth="783.0">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Lucida Console" size="20.0" />
+                           </font>
+                        </Hyperlink>
+                        <ImageView fx:id="postImageView" fitHeight="265.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <Label fx:id="postBodyText" alignment="TOP_LEFT" prefHeight="172.0" prefWidth="765.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Times New Roman" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content>
+               <padding>
+                  <Insets left="50.0" right="50.0" top="50.0" />
+               </padding>
+            </ScrollPane>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
