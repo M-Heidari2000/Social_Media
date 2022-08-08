@@ -1,5 +1,7 @@
 package controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import database.PostsDatabaseManager;
 import javafx.event.ActionEvent;
@@ -8,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -16,16 +21,19 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class PostDetailsController extends MainMenuController{
 
     @FXML
-    Hyperlink postTitleHyperlink;
+    Hyperlink postTitleHyperlink, userProfileHyperlink;
 
     @FXML
-    ImageView postImageView;
+    ImageView postImageView, likeImageView;
 
     @FXML
     Label postBodyLabel, postDateLabel;
@@ -33,19 +41,53 @@ public class PostDetailsController extends MainMenuController{
     @FXML
     VBox postVBox;
 
+    private Stage stage;
+    private Scene scene;
+    private Parent parent;
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
     private TextArea commentTextArea;
+    private int currentPostID;
+    private boolean liked;
     
     @Override
     public void initializeElements(FXMLLoader loader){
     }
 
-    public void showPost(String authorName, String title, String body, Timestamp lastEdited, String imageAddress){
+    public void showPost(int postID, String authorName, String title, String body, Timestamp lastEdited, String imageAddress) throws SQLException{
         postTitleHyperlink.setText(title);
         Image postImage = new Image(getClass().getResourceAsStream(imageAddress));
         postImageView.setImage(postImage);
         postBodyLabel.setText(body);
-        postDateLabel.setText("last edited on " + lastEdited.toString() + " by " + authorName);
+        postDateLabel.setText("last edited on " + lastEdited.toString() + " by ");
+        userProfileHyperlink.setText(authorName);
+        this.currentPostID = postID;
+        this.liked = dbManager.isLiked(postID);
+        if (this.liked){
+            Image likeImage = new Image(getClass().getResourceAsStream("..//static//post_details//liked.png"));
+            likeImageView.setImage(likeImage);
+        }
+        else{
+            Image likeImage = new Image(getClass().getResourceAsStream("..//static//post_details//notLiked.png"));
+            likeImageView.setImage(likeImage);
+        }
+
+        userProfileHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//user_profile_page.fxml"));
+                    root = loader.load();
+                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+        });
     }
 
     public void addExistingComments(String authorName, String body, Timestamp lastEdited){
@@ -68,6 +110,29 @@ public class PostDetailsController extends MainMenuController{
         commentVBox.getChildren().add(commentText);
         commentVBox.getChildren().add(fillVBox);
         commentVBox.getChildren().add(commentDate);
+    }
+
+    public void likePost(MouseEvent event){
+        if (!this.liked){
+            try {
+                dbManager.postLike(this.currentPostID);
+                this.liked = true;
+                Image likeImage = new Image(getClass().getResourceAsStream("..//static//post_details//liked.png"));
+                likeImageView.setImage(likeImage);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            try {
+                dbManager.postDislike(this.currentPostID);
+                this.liked = false;
+                Image likeImage = new Image(getClass().getResourceAsStream("..//static//post_details//notLiked.png"));
+                likeImageView.setImage(likeImage);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void addNewComment(int postID){

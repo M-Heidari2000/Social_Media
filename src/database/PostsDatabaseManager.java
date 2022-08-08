@@ -139,7 +139,7 @@ public class PostsDatabaseManager {
                 byte[] buf = rs.getBytes("image");
                 fos.write(buf, 0, imgLen);
                 
-                postDetailsController.showPost(authorName, title, body, lastEdited, imageAddressRlt);
+                postDetailsController.showPost(postID, authorName, title, body, lastEdited, imageAddressRlt);
                 fos.close();
             }
             catch (Exception e) {
@@ -164,6 +164,46 @@ public class PostsDatabaseManager {
         }
 
         postDetailsController.addNewComment(postID);
+    }
+
+    public void postLike(int postID) throws SQLException{
+        String POST_LIKE_SQL = "INSERT INTO post_like (user_id, post_id) VALUES (?, ?)";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(POST_LIKE_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ps.executeUpdate();
+
+        conn.close();
+        ps.close();
+    }
+
+    public void postDislike(int postID) throws SQLException{
+        String POST_DISLIKE_SQL = "DELETE FROM post_like WHERE user_id = ? AND post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(POST_DISLIKE_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ps.executeUpdate();
+        conn.close();
+        ps.close();
+    }
+
+    public boolean isLiked(int postID) throws SQLException{
+        String IS_POST_LIKED_SQL = "SELECT COUNT(*) AS exists FROM post_like WHERE user_id = ? AND post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(IS_POST_LIKED_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ResultSet rs =  ps.executeQuery();
+        boolean result = false;
+        while(rs.next()){
+            result = rs.getInt("exists") == 1 ? true : false;
+        }
+        conn.close();
+        ps.close();
+
+        return result;
     }
 
     public void insertComment(int postID, String body) throws SQLException{

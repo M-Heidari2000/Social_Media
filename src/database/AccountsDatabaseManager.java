@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import form_exception.InvalidDataException;
+import javafx.fxml.FXMLLoader;
 
 public class AccountsDatabaseManager {
     
@@ -160,6 +161,10 @@ public class AccountsDatabaseManager {
         preparedStatement.setTimestamp(7, currentTimeStamp);
         preparedStatement.executeUpdate();
         conn.close();
+    }
+
+    public void getProfile(FXMLLoader loader, int userID){
+        
     }
 
     public void delete(int userID) throws SQLException{
