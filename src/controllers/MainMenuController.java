@@ -32,8 +32,6 @@ public class MainMenuController implements Initializable{
     Image profileImg, explorerLogo, directLogo, groupsLogo, settingsLogo, createPostLogo, logoutLogo,
           myPostsLogo;
 
-    CurrentUser currentUser = CurrentUser.getCurrentUser();
-
     Stage stage;
     Parent root;
     Scene scene;
@@ -41,9 +39,9 @@ public class MainMenuController implements Initializable{
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
-            profileImg = new Image(getClass().getResourceAsStream(currentUser.getImgAddress()));
+            profileImg = new Image(getClass().getResourceAsStream(CurrentUser.getCurrentUser().getImgAddress()));
             profileImageView.setImage(profileImg);
-            usernameLabel.setText("Welcome " + currentUser.getFirstName() + "!");
+            usernameLabel.setText("Welcome " + CurrentUser.getCurrentUser().getFirstName() + "!");
 
             explorerLogo = new Image(getClass().getResourceAsStream("..//static//explorer_menu//logo_explorer.png"));
             explorerImageView.setImage(explorerLogo);
@@ -72,8 +70,11 @@ public class MainMenuController implements Initializable{
     }
 
     public void initializeElements(FXMLLoader loader) throws Exception{
-        
+        profileImg = new Image(getClass().getResourceAsStream(CurrentUser.getCurrentUser().getImgAddress()));
+        profileImageView.setImage(profileImg);
+        usernameLabel.setText("Welcome " + CurrentUser.getCurrentUser().getFirstName() + "!");
     }
+
 
     public void gotoExplorerPage(ActionEvent event) throws IOException, SQLException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//explorer_page.fxml"));
@@ -138,7 +139,7 @@ public class MainMenuController implements Initializable{
 
         if (alert.showAndWait().get() == ButtonType.OK){        
             FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//login_page.fxml"));
-            currentUser.setAuthenticated(false);
+            CurrentUser.getCurrentUser().setAuthenticated(false);
             root = loader.load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);

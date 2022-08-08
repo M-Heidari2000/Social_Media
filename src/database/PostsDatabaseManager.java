@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+import controllers.CurrentUser;
 import controllers.ExplorerController;
 import controllers.MyPostsController;
 import controllers.PostDetailsController;
@@ -96,7 +96,7 @@ public class PostsDatabaseManager {
         }
     }
 
-    public void insertPost(int authorID, String title, String body, File postImageFile) throws SQLException, IOException{
+    public void insertPost(int authorID, String title, String body, File postImageFile) throws SQLException, IOException, InterruptedException{
         String INSERT_POSTS_SQL = "INSERT INTO posts (author, title, body, image, last_edited) VALUES (?, ?, ?, ?, ?)";
         Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
         Connection conn = this.database.connect();
@@ -125,7 +125,7 @@ public class PostsDatabaseManager {
         while(rs.next()){
             FileOutputStream fos = null;
             try {
-                String imageAddressAbs = "D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\post_image_temp.jpg";
+                String imageAddressAbs = "D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\post_image_temp.png";
                 String imageAddressRlt = "..//static//temp//post_image_temp_" + Integer.toString(postID) + ".png";
                 File imgFile = new File(imageAddressAbs);
                 fos = new FileOutputStream(imgFile);
@@ -139,7 +139,7 @@ public class PostsDatabaseManager {
                 byte[] buf = rs.getBytes("image");
                 fos.write(buf, 0, imgLen);
                 
-                postDetailsController.showPost(authorName, title, body, lastEdited, imageAddressRlt);
+                postDetailsController.showPost(postID, authorName, title, body, lastEdited, imageAddressRlt);
                 fos.close();
             }
             catch (Exception e) {
@@ -148,4 +148,76 @@ public class PostsDatabaseManager {
         }
     }
 
+    public void getPostComments(FXMLLoader loader, int postID) throws SQLException{
+        String SELECT_COMMENTS_SQL = "SELECT * FROM comments INNER JOIN accounts ON comments.author_id = accounts.user_id WHERE post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(SELECT_COMMENTS_SQL);
+        ps.setInt(1, postID);
+        ResultSet rs = ps.executeQuery();
+        PostDetailsController postDetailsController = loader.getController();
+
+        while(rs.next()){
+            String authorName = rs.getString("username");
+            String body = rs.getString("body");
+            Timestamp lastEdited = rs.getTimestamp("last_edited");
+            postDetailsController.addExistingComments(authorName, body, lastEdited);
+        }
+
+        postDetailsController.addNewComment(postID);
+    }
+
+    public void postLike(int postID) throws SQLException{
+        String POST_LIKE_SQL = "INSERT INTO post_like (user_id, post_id) VALUES (?, ?)";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(POST_LIKE_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ps.executeUpdate();
+
+        conn.close();
+        ps.close();
+    }
+
+    public void postDislike(int postID) throws SQLException{
+        String POST_DISLIKE_SQL = "DELETE FROM post_like WHERE user_id = ? AND post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(POST_DISLIKE_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ps.executeUpdate();
+        conn.close();
+        ps.close();
+    }
+
+    public boolean isLiked(int postID) throws SQLException{
+        String IS_POST_LIKED_SQL = "SELECT COUNT(*) AS exists FROM post_like WHERE user_id = ? AND post_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(IS_POST_LIKED_SQL);
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ResultSet rs =  ps.executeQuery();
+        boolean result = false;
+        while(rs.next()){
+            result = rs.getInt("exists") == 1 ? true : false;
+        }
+        conn.close();
+        ps.close();
+
+        return result;
+    }
+
+    public void insertComment(int postID, String body) throws SQLException{
+        String INSERT_COMMENT_SQL = "INSERT INTO comments (author_id, post_id, body, last_edited) VALUES (?, ?, ?, ?)";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(INSERT_COMMENT_SQL);
+        Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
+        ps.setInt(1, CurrentUser.getCurrentUser().getUserID());
+        ps.setInt(2, postID);
+        ps.setString(3, body);
+        ps.setTimestamp(4, currentTimeStamp);
+        ps.executeUpdate();
+
+        conn.close();
+        ps.close();
+    }
 }

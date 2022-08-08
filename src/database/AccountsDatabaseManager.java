@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import form_exception.InvalidDataException;
+import javafx.fxml.FXMLLoader;
 
 public class AccountsDatabaseManager {
     
@@ -42,13 +43,14 @@ public class AccountsDatabaseManager {
             this.currentUser.setLastLogin(currentTimeStamp);
             this.currentUser.setAuthenticated(true);
             
-            File imgFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\profile_image_temp.jpg");
+            File imgFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\profile_image_temp.png");
             try {
                 FileOutputStream fos = new FileOutputStream(imgFile);
                 int imgLen = resultSet.getInt("img_len");
                 byte[] buf = resultSet.getBytes("profile_img");
                 fos.write(buf, 0, imgLen);
-                this.currentUser.setImgAddress("..//static//temp//profile_image_temp.jpg");
+                this.currentUser.setImgAddress("..//static//temp//profile_image_temp.png");
+                java.util.concurrent.TimeUnit.SECONDS.sleep(1);
                 fos.close();
             }
             catch (Exception e) {
@@ -119,7 +121,7 @@ public class AccountsDatabaseManager {
         ps.close();
     }
 
-    public void updateProfileImage(int userID, File profileImageFile) throws SQLException, IOException{
+    public void updateProfileImage(int userID, File profileImageFile) throws SQLException, IOException, InterruptedException{
         String UPDATE_PROFILE_IMAGE_SQL = "UPDATE accounts SET profile_img = ? WHERE user_id = ?";
         Connection conn = this.database.connect();
         PreparedStatement ps = conn.prepareStatement(UPDATE_PROFILE_IMAGE_SQL);
@@ -159,6 +161,10 @@ public class AccountsDatabaseManager {
         preparedStatement.setTimestamp(7, currentTimeStamp);
         preparedStatement.executeUpdate();
         conn.close();
+    }
+
+    public void getProfile(FXMLLoader loader, int userID){
+        
     }
 
     public void delete(int userID) throws SQLException{

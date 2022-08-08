@@ -114,7 +114,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Line>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="730.0" text="Change Profile Image" textFill="#ff3c84">
+                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="730.0" text="Change Profile Image">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>
@@ -143,7 +143,7 @@
                      </children>
                   </HBox>
                   <Line endX="725.0" layoutX="15.0" layoutY="251.0" stroke="#00000059" />
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="730.0" text="Change Bio" textFill="#ff3c84">
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="730.0" text="Change Bio">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>
@@ -173,7 +173,7 @@
                      </VBox.margin>
                   </Button>
                   <Line endX="725.0" layoutX="15.0" layoutY="219.0" stroke="#00000059" />
-                  <Label alignment="CENTER" prefHeight="18.0" prefWidth="750.0" text="Change password" textFill="#ff3c84">
+                  <Label alignment="CENTER" prefHeight="18.0" prefWidth="750.0" text="Change password">
                      <font>
                         <Font name="Lucida Console" size="16.0" />
                      </font>
@@ -255,7 +255,7 @@
                         </RadioButton>
                         <RadioButton fx:id="rButtonDark" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="88.0" text="Dark" toggleGroup="$theme">
                            <font>
-                              <Font name="Lucida Console" size="14.0" />
+                              <Font name="Lucida Console" size="13.0" />
                            </font>
                         </RadioButton>
                      </children>

@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -66,20 +67,43 @@ public class ExplorerController extends MainMenuController{
         Label newBodyLabel = new Label(this.shortenBody(body));
         newBodyLabel.setStyle("-fx-font: 13 arial");
         newBodyLabel.setPadding(new Insets(10, 10, 10, 0));
-        Label newDateLabel = new Label("last edited on " + lastEdited.toString() + " by " + authorName);
+        HBox newDateHbox = new HBox();
+        Label newDateLabel = new Label("last edited on " + lastEdited.toString() + " by");
+        Hyperlink userProfileHyperlink = new Hyperlink(authorName);
+        userProfileHyperlink.setAlignment(Pos.CENTER);
+        userProfileHyperlink.setStyle("-fx-font: 11 arial");
+        userProfileHyperlink.setPadding(new Insets(10, 0, 0, 0));
         newDateLabel.setStyle("-fx-font: 11 arial");
         newDateLabel.setPadding(new Insets(10, 10, 0, 0));
+        newDateHbox.getChildren().add(newDateLabel);
+        newDateHbox.getChildren().add(userProfileHyperlink);
         newVboxTitle.getChildren().add(newHyperLink);
         newVboxTitle.getChildren().add(newBodyLabel);
-        newVboxTitle.getChildren().add(newDateLabel);
-
+        newVboxTitle.getChildren().add(newDateHbox);
+        HBox.setMargin(newVboxTitle, new Insets(0, 0, 0, 10));
 
         postsVBox.getChildren().add(newVBox);
         newVBox.getChildren().add(newHBox);
-
         newHBox.getChildren().add(newImageView);
-
         newHBox.getChildren().add(newVboxTitle);
+
+        userProfileHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//user_profile_page.fxml"));
+                    root = loader.load();
+                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+        });
 
         newHyperLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -105,6 +129,7 @@ public class ExplorerController extends MainMenuController{
                     }
 
                     dbManager.getPostDetails(loader, postID);
+                    dbManager.getPostComments(loader, postID);
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
