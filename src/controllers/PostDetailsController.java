@@ -79,7 +79,7 @@ public class PostDetailsController extends MainMenuController{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//user_profile_page.fxml"));
                     root = loader.load();
                     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
+                    scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {

@@ -110,14 +110,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button fx:id="followButton" mnemonicParsing="false" onAction="#follow" prefHeight="31.0" prefWidth="68.0" text="Follow">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Lucida Console" size="13.0" />
-                     </font>
-                  </Button>
+                  <VBox fx:id="followVBox" alignment="CENTER" prefHeight="35.0" prefWidth="782.0" />
                   <Hyperlink fx:id="userProfileUsernameLabel" alignment="CENTER" prefHeight="44.0" prefWidth="785.0" />
                   <Label fx:id="userProfileBioLabel" alignment="TOP_LEFT" prefHeight="165.0" prefWidth="782.0">
                      <VBox.margin>

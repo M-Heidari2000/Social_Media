@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+
 import form_exception.InvalidDataException;
 import javafx.fxml.FXMLLoader;
 
@@ -165,7 +167,7 @@ public class AccountsDatabaseManager {
     }
 
     public void getProfile(FXMLLoader loader, String username) throws SQLException, InterruptedException{
-        String GET_USER_PROFILE_SQL = "SELECT username, email, first_name, last_name, profile_img, LENGTH(profile_img) AS img_len" + 
+        String GET_USER_PROFILE_SQL = "SELECT user_id, username, email, first_name, last_name, profile_img, LENGTH(profile_img) AS img_len" + 
                                       ", bio, last_login, account_type FROM accounts WHERE username = ?";
         Connection conn = this.database.connect();
         PreparedStatement ps = conn.prepareStatement(GET_USER_PROFILE_SQL);
@@ -173,6 +175,7 @@ public class AccountsDatabaseManager {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()){
+            int userID = rs.getInt("user_id");
             String email = rs.getString("email");
             String firstName = rs.getString("first_name");
             String lastName = rs.getString("last_name");
@@ -197,7 +200,7 @@ public class AccountsDatabaseManager {
             }
             java.util.concurrent.TimeUnit.SECONDS.sleep(1);
             UserProfileController userProfileController = loader.getController();
-            userProfileController.showProfile(username, email, firstName, lastName, bio, accType, imgAddress, lastLogin);
+            userProfileController.showProfile(userID, username, email, firstName, lastName, bio, accType, imgAddress, lastLogin);
         }
 
         conn.close();
@@ -211,5 +214,45 @@ public class AccountsDatabaseManager {
         ps.setInt(1,userID);
         ps.executeUpdate();
         conn.close();
+    }
+
+    public boolean isFollowed(int followerID, int followeeID) throws SQLException{
+        String IS_LIKED_SQL = "SELECT COUNT(*) FROM follows WHERE follower_id = ? AND followee_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(IS_LIKED_SQL);
+        ps.setInt(1, followerID);
+        ps.setInt(2, followeeID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        if (rs.getInt(1) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public void follow(int followerID, int followeeID) throws SQLException{
+        String USER_FOLLOW_SQL = "INSERT INTO follows (follower_id, followee_id, follow_date) VALUES (?, ?, ?)";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(USER_FOLLOW_SQL);
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        ps.setInt(1, followerID);
+        ps.setInt(2, followeeID);
+        ps.setTimestamp(3, currentTimestamp);
+        ps.executeUpdate();
+
+        conn.close();
+        ps.close();
+    }
+
+    public void unfollow(int followerID, int followeeID) throws SQLException{
+        String USER_UNFOLLOW_SQL = "DELETE FROM follows WHERE follower_id = ? AND followee_id = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(USER_UNFOLLOW_SQL);
+        ps.setInt(1, followerID);
+        ps.setInt(2, followeeID);
+        ps.executeUpdate();
+
+        conn.close();
+        ps.close();
     }
 }
