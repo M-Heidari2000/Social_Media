@@ -96,7 +96,7 @@ public class PostsDatabaseManager {
         }
     }
 
-    public void insertPost(int authorID, String title, String body, File postImageFile) throws SQLException, IOException{
+    public void insertPost(int authorID, String title, String body, File postImageFile) throws SQLException, IOException, InterruptedException{
         String INSERT_POSTS_SQL = "INSERT INTO posts (author, title, body, image, last_edited) VALUES (?, ?, ?, ?, ?)";
         Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
         Connection conn = this.database.connect();

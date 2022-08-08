@@ -49,6 +49,7 @@ public class AccountsDatabaseManager {
                 byte[] buf = resultSet.getBytes("profile_img");
                 fos.write(buf, 0, imgLen);
                 this.currentUser.setImgAddress("..//static//temp//profile_image_temp.png");
+                java.util.concurrent.TimeUnit.SECONDS.sleep(1);
                 fos.close();
             }
             catch (Exception e) {
@@ -119,7 +120,7 @@ public class AccountsDatabaseManager {
         ps.close();
     }
 
-    public void updateProfileImage(int userID, File profileImageFile) throws SQLException, IOException{
+    public void updateProfileImage(int userID, File profileImageFile) throws SQLException, IOException, InterruptedException{
         String UPDATE_PROFILE_IMAGE_SQL = "UPDATE accounts SET profile_img = ? WHERE user_id = ?";
         Connection conn = this.database.connect();
         PreparedStatement ps = conn.prepareStatement(UPDATE_PROFILE_IMAGE_SQL);

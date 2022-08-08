@@ -42,7 +42,7 @@ public class LoginPageController {
         try{
             dbManager.authenticate(username, password);
             dbManager.updateLastLogin();
-            this.gotoExplorerPage(event);
+            this.gotoMainMenu(event);
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -53,16 +53,18 @@ public class LoginPageController {
         }
     }
 
-    public void gotoRegisterPage(ActionEvent event) throws IOException{
+    public void gotoRegisterPage(ActionEvent event) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//register_page.fxml"));
         root = loader.load();
+        MainMenuController mainMenuController = loader.getController();
+        mainMenuController.initializeElements(loader);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void gotoExplorerPage(ActionEvent event) throws IOException{
+    public void gotoMainMenu(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//main_menu_page.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
