@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import database.AccountsDatabaseManager;
 import database.PostsDatabaseManager;
 import form_exception.PostNotFoundException;
 import javafx.event.ActionEvent;
@@ -30,6 +32,7 @@ public class ExplorerController extends MainMenuController{
     private VBox postsVBox;
 
     private PostsDatabaseManager dbManager = new PostsDatabaseManager();
+    private AccountsDatabaseManager accountdbManager = new AccountsDatabaseManager(); 
 
     @Override
     public void initializeElements(FXMLLoader loader) throws SQLException, IOException{
@@ -74,7 +77,7 @@ public class ExplorerController extends MainMenuController{
         userProfileHyperlink.setStyle("-fx-font: 11 arial");
         userProfileHyperlink.setPadding(new Insets(10, 0, 0, 0));
         newDateLabel.setStyle("-fx-font: 11 arial");
-        newDateLabel.setPadding(new Insets(10, 10, 0, 0));
+        newDateLabel.setPadding(new Insets(10, 5, 0, 0));
         newDateHbox.getChildren().add(newDateLabel);
         newDateHbox.getChildren().add(userProfileHyperlink);
         newVboxTitle.getChildren().add(newHyperLink);
@@ -94,15 +97,17 @@ public class ExplorerController extends MainMenuController{
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//user_profile_page.fxml"));
                     root = loader.load();
+                    UserProfileController userProfileController = loader.getController();
+                    userProfileController.initializeElements(loader);
                     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
+                    accountdbManager.getProfile(loader, authorName);
+                    scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            
         });
 
         newHyperLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -130,7 +135,7 @@ public class ExplorerController extends MainMenuController{
 
                     dbManager.getPostDetails(loader, postID);
                     dbManager.getPostComments(loader, postID);
-                    Scene scene = new Scene(root);
+                    scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
 

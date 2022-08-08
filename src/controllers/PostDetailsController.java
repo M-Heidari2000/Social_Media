@@ -86,7 +86,6 @@ public class PostDetailsController extends MainMenuController{
                     e.printStackTrace();
                 }
             }
-            
         });
     }
 

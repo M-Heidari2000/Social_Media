@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -137,7 +138,7 @@ public class MainMenuController implements Initializable{
         alert.setHeaderText("You're about to logout!");
         alert.setContentText("Are you sure you want to logout?");
 
-        if (alert.showAndWait().get() == ButtonType.OK){        
+        if (alert.showAndWait().get() == ButtonType.OK){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("..//scenes//login_page.fxml"));
             CurrentUser.getCurrentUser().setAuthenticated(false);
             root = loader.load();
