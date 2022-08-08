@@ -2,6 +2,7 @@ package database;
 
 import java.sql.Timestamp;
 import controllers.CurrentUser;
+import controllers.UserProfileController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -50,7 +51,7 @@ public class AccountsDatabaseManager {
                 byte[] buf = resultSet.getBytes("profile_img");
                 fos.write(buf, 0, imgLen);
                 this.currentUser.setImgAddress("..//static//temp//profile_image_temp.png");
-                java.util.concurrent.TimeUnit.SECONDS.sleep(1);
+                // java.util.concurrent.TimeUnit.SECONDS.sleep(1);
                 fos.close();
             }
             catch (Exception e) {
@@ -163,8 +164,44 @@ public class AccountsDatabaseManager {
         conn.close();
     }
 
-    public void getProfile(FXMLLoader loader, int userID){
-        
+    public void getProfile(FXMLLoader loader, String username) throws SQLException, InterruptedException{
+        String GET_USER_PROFILE_SQL = "SELECT username, email, first_name, last_name, profile_img, LENGTH(profile_img) AS img_len" + 
+                                      ", bio, last_login, account_type FROM accounts WHERE username = ?";
+        Connection conn = this.database.connect();
+        PreparedStatement ps = conn.prepareStatement(GET_USER_PROFILE_SQL);
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()){
+            String email = rs.getString("email");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String bio = rs.getString("bio");
+            Timestamp lastLogin = rs.getTimestamp("last_login");
+            String accType = rs.getString("account_type");
+            String imgAddress = "";
+
+            File imgFile = new File("D:\\Projects\\OOP\\Social_Media\\src\\static\\temp\\user_profile_image_temp.png");
+            try {
+                FileOutputStream fos = new FileOutputStream(imgFile);
+                int imgLen = rs.getInt("img_len");
+                byte[] buf = rs.getBytes("profile_img");
+                fos.write(buf, 0, imgLen);
+                // java.util.concurrent.TimeUnit.SECONDS.sleep(1);
+                fos.close();
+                imgAddress = "..//static//temp//user_profile_image_temp.png";
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                imgAddress = "..//static//profile_img_default.png";
+            }
+            java.util.concurrent.TimeUnit.SECONDS.sleep(1);
+            UserProfileController userProfileController = loader.getController();
+            userProfileController.showProfile(username, email, firstName, lastName, bio, accType, imgAddress, lastLogin);
+        }
+
+        conn.close();
+        ps.close();
     }
 
     public void delete(int userID) throws SQLException{
